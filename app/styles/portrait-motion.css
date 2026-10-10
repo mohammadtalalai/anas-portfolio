@@ -1,0 +1,197 @@
+/* V3 / PORTRAIT STAGE: perceptible, intentional motion without glass UI or neon.
+   Designed after the requested editorial V2: dark neutral studio with an
+   asymmetric architectural arch, faint moving highlight, and cursor parallax.
+   Animation is decorative and disabled for reduced-motion users.
+*/
+.portrait-region {
+  --portrait-accent: #cbb1e7;
+  min-height: 520px;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  perspective: 950px;
+  overflow: visible;
+  padding: 22px 22px 32px;
+}
+.portrait-backdrop-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  top: 14px;
+  right: 4%;
+  bottom: 12px;
+  left: 8%;
+  border: 1px solid rgba(203,177,231,.13);
+  border-radius: 49% 49% 18px 18px / 38% 38% 18px 18px;
+  transform: translate(11px,-9px);
+  opacity: .84;
+}
+.portrait-region .portrait-frame {
+  --portrait-x: 0px;
+  --portrait-y: 0px;
+  position: relative;
+  z-index: 2;
+  width: min(100%, 380px);
+  height: 473px;
+  background: linear-gradient(148deg, #664c7f 0%, #553d6b 36%, #3d1e5a 72%, #301847 100%);
+  border: 1px solid rgba(229,215,243,.21);
+  border-radius: 48% 48% 16px 16px / 34% 34% 16px 16px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  box-shadow: 0 28px 58px -25px rgba(0,0,0,.38),
+              0 4px 13px -4px rgba(0,0,0,.24),
+              inset 0 1px rgba(248,244,252,.21);
+  animation: mt-stage-hover 6.4s ease-in-out infinite;
+  transition: rotate .46s cubic-bezier(.2,.78,.2,1),
+              box-shadow .4s ease,
+              border-color .4s ease;
+  will-change: transform;
+}
+.portrait-region .portrait-frame::before,
+.portrait-region .portrait-frame::after { content: none!important;display:none!important; }
+.portrait-region .portrait-frame.portrait-interacting {
+  border-color: rgba(227,213,242,.48);
+  box-shadow: 0 41px 68px -24px rgba(0,0,0,.42),
+              0 8px 28px -10px rgba(173,132,216,.16),
+              inset 0 1px rgba(255,255,255,.27);
+}
+.portrait-region .portrait-image-area {
+  position:absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  overflow: hidden;
+  z-index: 2;
+}
+.portrait-region .portrait-image-area::before,
+.portrait-region .portrait-image-area::after { content:none!important;display:none!important; }
+.portrait-region .portrait-image {
+  position: absolute;
+  width: 100%;
+  height: 104%;
+  max-width: none;
+  max-height: none;
+  inset: auto 0 -3% 0;
+  object-fit: contain;
+  object-position: 50% 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 16px 17px rgba(28,14,41,.16));
+  transform: translate3d(var(--portrait-x),var(--portrait-y),0) scale(1.025);
+  transition: transform .55s cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+.portrait-soft-sweep {
+  position: absolute;
+  z-index: 3;
+  inset: -38% auto -38% -98%;
+  width: 49%;
+  pointer-events: none;
+  transform: rotate(17deg);
+  background: linear-gradient(90deg,transparent,rgba(248,244,251,.10),transparent);
+  animation: mt-soft-sweep 9s cubic-bezier(.28,.45,.63,.95) infinite;
+  mix-blend-mode: screen;
+}
+.portrait-edge-track {
+  position: absolute;
+  z-index: 4;
+  height: 28%;
+  width: 2px;
+  right: 0;
+  bottom: 16%;
+  border-radius: 999px;
+  background: linear-gradient(180deg,transparent,var(--portrait-accent),transparent);
+  opacity: .72;
+  animation: mt-edge-travel 5s ease-in-out infinite;
+  pointer-events:none;
+}
+.portrait-info-tag {
+  position: absolute;
+  z-index: 4;
+  left: -2%;
+  bottom: 88px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 14px;
+  color: #f0e8f8;
+  font: 600 9px/1.4 'DM Mono',monospace;
+  letter-spacing: .12em;
+  background: #27133a;
+  border: 1px solid rgba(217,198,236,.24);
+  border-radius: 7px;
+  box-shadow: 0 16px 30px -20px #000000;
+  animation: mt-tag-bob 5.1s ease-in-out infinite;
+  pointer-events: none;
+}
+.portrait-status-dot{display:block;width:6px;height:6px;border-radius:50%;background:var(--portrait-accent)}
+.portrait-info-tag b{color:#a38dba;font-weight:400}
+.portrait-tag-arrow{font-size:13px;color:var(--portrait-accent);margin-left:8px}
+.portrait-bottom-caption {
+  position: absolute;
+  z-index: 1;
+  width: min(90%,360px);
+  left: 50%;bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  transform: translateX(-50%);
+  color: #b5a4c6;
+  font: 600 9px/1.3 'DM Mono',monospace;
+  letter-spacing: .14em;
+}
+@keyframes mt-stage-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes mt-tag-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes mt-soft-sweep{0%,28%{translate:0;opacity:0}37%{opacity:.85}62%{translate:850% 0;opacity:.65}70%,100%{translate:850% 0;opacity:0}}
+@keyframes mt-edge-travel{0%,100%{transform:translateY(-25px);opacity:.26}50%{transform:translateY(36px);opacity:.76}}
+.light .portrait-region .portrait-frame {
+  background:linear-gradient(150deg,#cdbcde 0%,#a68ebe 55%,#7f5d9f 100%);
+  border-color:rgba(84,47,121,.24);
+  box-shadow:0 25px 55px -29px rgba(47,24,72,.25),inset 0 1px rgba(255,255,255,.38);
+}
+.light .portrait-info-tag{background:#351a4f;border-color:rgba(71,35,106,.2)}
+.light .portrait-bottom-caption{color:#755a91}
+.light .portrait-backdrop-line{border-color:rgba(86,49,124,.2)}
+@media(max-width:1080px){
+  .portrait-region{min-height:460px;padding:13px 8px 27px}
+  .portrait-region .portrait-frame{width:min(100%,340px);height:422px}
+  .portrait-info-tag{left:0;bottom:68px}
+}
+@media(max-width:975px){
+  .portrait-region{min-height:435px}
+  .portrait-region .portrait-frame{width:min(100%,320px);height:395px}
+  .portrait-info-tag{left:calc(50% - 195px);bottom:61px}
+}
+@media(max-width:760px){
+  .portrait-region{min-height:370px;padding:15px 10px 31px}
+  .portrait-region .portrait-frame{width:min(73vw,266px);height:324px;border-radius:48% 48% 15px 15px / 34% 34% 15px 15px}
+  .portrait-backdrop-line{top:6px;right:17%;left:17%;bottom:23px}
+  .portrait-info-tag{left:calc(50% - 155px);bottom:42px;padding:9px 10px;font-size:8px;gap:6px}
+  .portrait-bottom-caption{width:min(80%,275px);bottom:8px;font-size:7.5px}
+}
+@media(max-width:400px){
+  .portrait-region{min-height:340px}
+  .portrait-region .portrait-frame{width:min(68vw,235px);height:297px}
+  .portrait-info-tag{left:calc(50% - 142px);bottom:40px;font-size:7px}
+  .portrait-backdrop-line{left:14%;right:14%}
+}
+@media(prefers-reduced-motion:reduce){
+ .portrait-region .portrait-frame,
+ .portrait-region .portrait-info-tag,
+ .portrait-region .portrait-edge-track,
+ .portrait-region .portrait-soft-sweep{animation:none!important;transform:none!important;translate:none!important;rotate:none!important}
+ .portrait-region .portrait-image{transform:scale(1.025)!important;transition:none!important}
+}
+html.motion-off .portrait-region .portrait-frame,
+html.motion-off .portrait-region .portrait-info-tag,
+html.motion-off .portrait-region .portrait-edge-track,
+html.motion-off .portrait-region .portrait-soft-sweep {animation:none!important;transform:none!important;translate:none!important;rotate:none!important}
+html.motion-off .portrait-region .portrait-image{transform:scale(1.025)!important;transition:none!important}
+
+/* The subtle tilt applies to content cards as well as the portrait. */
+@media (hover:hover) and (pointer:fine){
+ .tilt-card{transition:rotate .34s cubic-bezier(.2,.8,.2,1)}
+}
